@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
+import './quiz.dart';
+import './result.dart';
 
 void main() => runApp(MyApp());
 
@@ -15,42 +16,44 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
+  final _questions = const [
+    {
+      'questionText': 'What\'s your favorite color?',
+      'answers': ['Black', 'Red', 'Green', 'White']
+    },
+    {
+      'questionText': 'What\'s your favorite animal?',
+      'answers': ['Rabbit', 'Snake', 'Elephant', 'Lion']
+    },
+    {
+      'questionText': 'What\'s your favorite state?',
+      'answers': ['Saskatchewan', 'Ontario', 'Manitoba', 'British Columbia']
+    },
+  ];
+
   void _answerQuestion() {
-    setState(() {
-      _questionIndex += 1;
-    });
+    if (_questionIndex < _questions.length) {
+      setState(() {
+        _questionIndex += 1;
+      });
+    }
     print('Answer choosen!');
   }
 
   @override
   Widget build(BuildContext context) {
-    var _questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?',
-      'What\'s your favorite city?'
-    ];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Quiz App'),
         ),
-        body: Column(
-          children: <Widget>[
-            Question(_questions[_questionIndex]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: _answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              onPressed: _answerQuestion,
-            )
-          ],
-        ),
+        body: _questionIndex < _questions.length
+            ? Quiz(
+                answerQuestion: _answerQuestion,
+                questionIndex: _questionIndex,
+                questions: _questions,
+              )
+            : Result(),
       ),
     );
   }
