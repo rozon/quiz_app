@@ -12,13 +12,18 @@ class Quiz extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Question(questions[questionIndex]['questionText']),
-        ...(questions[questionIndex]['answers'] as List<String>).map((answer) {
-          return Answer(answer, answerQuestion);
-        }).toList()
-      ],
+    return Container(
+      padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+      child: Column(
+        children: <Widget>[
+          Question(questions[questionIndex]['questionText']),
+          ...(questions[questionIndex]['answers'] as List<Map<String, Object>>)
+              .map((answer) {
+            return Answer(
+                answer['text'], () => answerQuestion(answer['score']));
+          }).toList()
+        ],
+      ),
     );
   }
 }
